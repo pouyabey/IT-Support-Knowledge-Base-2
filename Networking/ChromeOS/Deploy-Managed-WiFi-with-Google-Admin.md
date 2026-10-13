@@ -36,12 +36,13 @@ For a Chromebook-only deployment, enable only:
 
 Leave the other platforms disabled:
 
+```
 [ ] Android
 [ ] Chromebooks (by user)
 [x] Chromebooks (by device)
 [ ] Google Meet hardware
 [ ] iOS
-
+```
 Using "Chromebooks (by device)" applies the network configuration directly to managed ChromeOS devices rather than associating the configuration with an individual user account.
 
 This allows the managed network to be available on the device even before a user signs in.
