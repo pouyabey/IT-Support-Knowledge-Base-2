@@ -4,9 +4,9 @@
 
 This guide explains how to centrally deploy a Wi-Fi configuration to managed Chromebooks using Google Admin Console.
 
-The configuration is applied at the device level so Chromebooks can connect to the managed network without requiring users to manually enter Wi-Fi credentials.
+The configuration is applied at the device level so managed Chromebooks can automatically receive and use the Wi-Fi profile without requiring users to manually enter network credentials.
 
-No organization-specific SSIDs, passwords, domains, IP addresses, or other sensitive infrastructure information should be stored in this documentation.
+This documentation intentionally uses generic placeholders and does not include production SSIDs, passwords, domains, IP addresses, or other organization-specific information.
 
 ---
 
@@ -30,13 +30,11 @@ CREATE WI-FI NETWORK
 
 ## Platform Access
 
-Enable:
+For a Chromebook-only deployment, enable only:
 
 [x] Chromebooks (by device)
 
-Leave other platforms disabled unless they are specifically required.
-
-For a Chromebook-only deployment:
+Leave the other platforms disabled:
 
 [ ] Android
 [ ] Chromebooks (by user)
@@ -44,9 +42,9 @@ For a Chromebook-only deployment:
 [ ] Google Meet hardware
 [ ] iOS
 
-Using "Chromebooks (by device)" applies the network configuration directly to managed ChromeOS devices.
+Using "Chromebooks (by device)" applies the network configuration directly to managed ChromeOS devices rather than associating the configuration with an individual user account.
 
-This also allows the network to be available before a user signs in.
+This allows the managed network to be available on the device even before a user signs in.
 
 ---
 
@@ -54,13 +52,13 @@ This also allows the network to be available before a user signs in.
 
 ### Name
 
-The Name field is an administrative label used inside Google Admin Console.
+The Name field is an administrative label used only inside Google Admin Console.
+
+It does not need to match the actual wireless network name.
 
 Example:
 
-Student Wi-Fi - Managed Chromebooks
-
-This value does not need to match the actual SSID.
+Managed Student Wi-Fi
 
 ### SSID
 
@@ -70,9 +68,9 @@ Example:
 
 Student-WiFi
 
-The SSID entered in Google Admin must exactly match the network name configured on the wireless controller.
+The SSID configured in Google Admin must exactly match the SSID configured on the wireless controller or access points.
 
-Do not document production SSIDs in a public repository.
+Do not include production SSIDs in public documentation.
 
 ---
 
@@ -82,37 +80,40 @@ Enable:
 
 [x] Automatically connect
 
-This allows managed Chromebooks to automatically connect when the configured network is available.
+This allows managed Chromebooks to automatically connect to the network whenever it is available.
 
 ---
 
-## Security
+## Security Settings
 
-Configure the same wireless security method used by the wireless infrastructure.
+Configure the same wireless security type used by the wireless infrastructure.
 
-For a WPA/WPA2/WPA3 Personal network, enter the network passphrase in the Google Admin configuration.
+For a WPA/WPA2/WPA3 Personal network, enter the network passphrase in the Passphrase field.
 
-Important:
+The following values must match the wireless infrastructure:
 
-Never store the actual Wi-Fi passphrase in documentation, source control, screenshots, tickets, or public repositories.
+- SSID
+- Security type
+- Passphrase
 
-Example documentation should use:
+Never store real Wi-Fi credentials in documentation, source control, screenshots, tickets, or public repositories.
 
+Use placeholders such as:
+
+<SSID>
 <WI-FI-PASSPHRASE>
-
-instead of an actual credential.
 
 ---
 
 ## IP Settings
 
-For a standard DHCP-based network, leave:
+For a standard DHCP-based network, leave the following option disabled:
 
 [ ] Allow IP address to be configured on the device
 
-The Chromebook will receive its IP configuration from DHCP.
+The Chromebook will receive its IP address, subnet information, gateway, and other network settings through DHCP.
 
-Static addresses should only be configured when specifically required.
+Static IP configuration is not required for normal Chromebook deployments.
 
 ---
 
@@ -123,7 +124,7 @@ For networks that do not use an explicit proxy, configure:
 Proxy Type:
 Direct Internet connection
 
-If an organization uses an HTTP/HTTPS proxy, configure it according to the organization's network requirements.
+Only configure proxy settings if the organization specifically requires an HTTP or HTTPS proxy.
 
 Do not publish internal proxy addresses in public documentation.
 
@@ -131,7 +132,7 @@ Do not publish internal proxy addresses in public documentation.
 
 ## DNS Settings
 
-For a standard DHCP configuration:
+For a standard DHCP-based configuration:
 
 [ ] Allow users to modify these values
 
@@ -139,17 +140,19 @@ Select:
 
 (x) Automatic name servers
 
-Leave static DNS server fields empty unless custom DNS servers are required.
+Leave the Static DNS servers field empty.
 
-Do not publish internal DNS server IP addresses in public documentation.
+This allows the Chromebook to use the DNS servers supplied by DHCP.
+
+Do not publish internal DNS server addresses in public documentation.
 
 ---
 
 ## Custom Search Domains
 
-Leave the search domain field empty unless an internal DNS search domain is required.
+Leave the Domain values field empty unless a specific DNS search domain is required.
 
-When left empty, ChromeOS can use values supplied through DHCP.
+When left empty, ChromeOS can use the search domain information supplied by DHCP.
 
 Internal DNS domains should not be included in public documentation.
 
@@ -157,27 +160,27 @@ Internal DNS domains should not be included in public documentation.
 
 ## Captive Portal Settings
 
-For a normal internal password-protected Wi-Fi network that does not require browser-based authentication:
+For a normal password-protected internal Wi-Fi network that does not require browser-based authentication, select:
 
 (x) Captive Portal Detection Off
 
-Leave:
+Leave the following option disabled:
 
 [ ] HTTP web probes only
 
-If the network requires users to interact with a captive portal or sign-in page, enable captive portal detection instead.
+If the wireless network requires users to interact with a captive portal, browser login page, or terms-of-service page, Captive Portal Detection should be enabled instead.
 
 ---
 
 ## Safe Wi-Fi Migration Procedure
 
-When migrating Chromebooks from an existing Wi-Fi network to a new managed Wi-Fi configuration, avoid removing the existing network before devices receive the new policy.
+When migrating managed Chromebooks from an existing Wi-Fi network to a new managed Wi-Fi configuration, do not remove the existing network before the devices receive the new policy.
 
-Recommended process:
+A safe migration process is:
 
-1. Keep the existing network available.
+1. Keep the existing Wi-Fi network online.
 
-2. Configure the new Wi-Fi network in Google Admin Console.
+2. Create the new Wi-Fi configuration in Google Admin Console.
 
 3. Enable:
 
@@ -187,23 +190,27 @@ Recommended process:
 
    Automatically connect
 
-5. Save the configuration.
+5. Enter the new SSID, security type, and passphrase.
 
-6. Allow managed Chromebooks to receive the updated device policy while they still have Internet access.
+6. Save the configuration.
 
-7. Test the new network on a small number of Chromebooks.
+7. Allow the managed Chromebooks to receive the new device policy while they still have Internet access through the existing network.
 
-8. Verify:
+8. Test the new network on a small number of Chromebook devices.
+
+9. Verify:
 
    - Successful Wi-Fi association
    - DHCP address assignment
    - DNS resolution
    - Internet connectivity
-   - Automatic reconnection after restart
+   - Automatic reconnection
+   - Connectivity after restart
+   - Availability at the login screen
 
-9. Confirm that the broader Chromebook fleet has received the policy.
+10. Confirm that the broader Chromebook fleet has received the policy.
 
-10. Retire the previous network only after successful validation.
+11. Retire the old Wi-Fi network only after the new configuration has been successfully validated.
 
 ---
 
@@ -213,45 +220,49 @@ Using:
 
 Chromebooks (by device)
 
-makes the Wi-Fi configuration part of the managed Chromebook policy rather than relying on individual users to configure the network.
+makes the Wi-Fi configuration part of the managed Chromebook policy instead of relying on individual users to configure the network.
 
 Benefits include:
 
 - Wi-Fi availability before user login
-- Centralized credential management
+- Centralized Wi-Fi management
 - Consistent configuration across devices
-- Reduced manual setup
-- Easier network migration
-- Less exposure of Wi-Fi credentials to users
+- Reduced manual configuration
+- Easier Wi-Fi migrations
+- Reduced exposure of Wi-Fi credentials to end users
+- Improved control over managed Chromebook connectivity
 
 ---
 
 ## Security Considerations
 
-Do not include the following in public documentation:
+Do not include the following information in a public repository:
 
 - Wi-Fi passwords
 - Production SSIDs
 - Internal domains
 - Organizational Unit names
+- Usernames
 - Device serial numbers
 - MAC addresses
 - Internal IP addresses
+- Subnet information
 - VLAN IDs
 - Firewall rules
-- Internal DNS servers
-- Administrative usernames
-- Google Admin screenshots containing organization-specific information
+- Internal DNS server addresses
+- Administrative account information
+- Screenshots containing organization-specific information
 
-Use placeholders such as:
+Use generic placeholders when examples are necessary.
+
+Examples:
 
 <SSID>
 <WI-FI-PASSPHRASE>
 <ORGANIZATION-DOMAIN>
 <DEVICE-OU>
 <DNS-SERVER>
-
-when examples are necessary.
+<INTERNAL-IP>
 
 ---
 
@@ -260,8 +271,8 @@ when examples are necessary.
 Platform:
 Chromebooks (by device)
 
-Connection:
-Automatically connect
+Automatic connection:
+Enabled
 
 IP configuration:
 DHCP
@@ -270,12 +281,18 @@ Proxy:
 Direct Internet connection
 
 DNS:
-Automatic
+Automatic name servers
+
+Static DNS:
+None
+
+Custom search domains:
+None
 
 Captive Portal Detection:
 Off for networks without captive portal authentication
 
-Deployment:
+Deployment method:
 Google Admin device policy
 
 Result:
