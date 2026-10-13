@@ -1,78 +1,103 @@
-# Apple School Manager + Mosyle Integration
+# Apple School Manager, Mosyle, and Managed Apple Accounts
 
 ## Overview
 
-Implemented centralized Apple device and account management by integrating Apple School Manager (ASM), Mosyle MDM, and Google Workspace.
+Implemented and prepared a centralized Apple device management environment using Apple School Manager (ASM), Mosyle MDM, and Google Workspace.
 
-The goal was to improve control of school-owned Macs, simplify enrollment, and prevent devices from becoming tied to personal Apple IDs.
+The main goals are to:
+
+- Automate management of school-owned Macs
+- Prevent personal Apple Accounts from being used on school Macs
+- Reduce Activation Lock risks
+- Allow staff to use school-managed Apple Accounts
+- Keep Apple devices under organizational control
 
 ## Problem
 
-Some school Macs had been signed into personal Apple IDs.
+School-owned Macs could previously be signed into personal Apple Accounts.
 
-This creates a risk of Activation Lock remaining on a device after it is reset. In one case, a 2020 Mac became locked to a previous user's Apple ID, preventing the device from being fully reused or sold.
+This can create an Activation Lock problem after a device is erased or reassigned. We currently have a 2020 Mac affected by this issue, which cannot be fully reused or sold until the lock is resolved.
 
-Apple devices were also not automatically assigned to the school's MDM.
+Apple devices also were not automatically assigned to the school's MDM.
 
 ## Implementation
 
-### 1. Connected Apple School Manager to Mosyle
+### 1. Apple School Manager and Mosyle Integration
 
-- Created a Device Management Service for Mosyle in Apple School Manager.
-- Exchanged the required public key and server token.
-- Verified communication between ASM and Mosyle.
-- Configured Mosyle as the default MDM assignment for new Macs.
+- Created Mosyle as a Device Management Service in Apple School Manager
+- Exchanged the required public key and server token
+- Verified communication between ASM and Mosyle
+- Set Mosyle as the default MDM assignment for new Macs
 
-### 2. Device Assignment
+Existing Macs can also be manually assigned to Mosyle from Apple School Manager.
 
-Existing Apple devices can now be manually assigned to Mosyle through Apple School Manager.
+### 2. School Domain Verification
 
-New Macs added to the organization can automatically be assigned to Mosyle for enrollment.
+Verified the school's email domain in Apple School Manager.
 
-### 3. Verified the School Domain
+This allows the organization to manage Apple Accounts associated with the school domain and prepare them for Google Workspace authentication.
 
-Verified the organization's email domain in Apple School Manager.
+### 3. Managed Apple Accounts
 
-This allows the school to manage Apple Accounts that use the school email domain.
+The planned account structure is:
 
-### 4. Prepared Managed Apple Accounts
+Google Workspace
+→ Managed Apple Account
+→ Apple School Manager
+→ Mosyle-managed Mac
 
-Planned integration with Google Workspace so staff can use their existing school Google credentials with Managed Apple Accounts.
+Staff will be able to use their school credentials for Apple services through Managed Apple Accounts.
+
+### 4. Block Personal Apple Accounts on School Macs
+
+School-owned Macs will be restricted to Managed Apple Accounts only.
+
+This prevents staff from signing into school Macs with personal Gmail, iCloud, or other personal Apple Accounts.
 
 Benefits include:
 
-- Preventing new personal Apple IDs from using school email addresses
-- Reducing Activation Lock risks
-- Keeping school devices under organizational control
-- Simplifying Apple Account management
-- Providing consistent device management through Mosyle
+- Reducing Activation Lock risk
+- Preventing school devices from becoming tied to personal accounts
+- Making devices easier to reset and reassign
+- Avoiding problems when devices are sold or retired
+- Keeping organizational devices under school control
+
+## Existing Personal Accounts
+
+Apple School Manager identified existing personal Apple Accounts using the school email domain.
+
+Before Managed Apple Accounts are fully implemented, those users may need to either:
+
+- Transfer the existing account to organizational management, or
+- Change the email address of their personal Apple Account to a personal address
+
+A personal account may still be kept for use on personal devices, but it will not be permitted on school-owned Macs.
 
 ## Domain Capture
 
-Apple School Manager identified existing personal Apple Accounts using the school domain.
+Domain Capture will allow the organization to take control of the school email domain for Apple Account use.
 
-Domain Capture can be used to transition these accounts.
+Because this affects existing accounts and cannot simply be reversed, implementation will proceed after management approval.
 
-Existing users will be asked to either:
+## Current Status
 
-- Transfer the account to the organization, or
-- Change the Apple Account to a personal email address
+Completed:
+- Apple School Manager access
+- Mosyle MDM integration
+- MDM server token exchange
+- Default Mac assignment to Mosyle
+- School domain verification
 
-Because Domain Capture affects existing user accounts and is not easily reversible, management approval is required before implementation.
+Pending:
+- Management approval
+- Domain Capture
+- Google Workspace federation
+- Managed Apple Account rollout
+- Restriction of school Macs to Managed Apple Accounts only
+- Assignment of existing Macs to Mosyle
 
-## Result
+## Expected Result
 
-The Apple management environment is now prepared for:
+School-owned Macs will be centrally managed through Apple School Manager and Mosyle, while staff use organization-managed Apple Accounts instead of personal Apple IDs.
 
-- Automated Device Enrollment
-- Centralized Mac management through Mosyle
-- Managed Apple Accounts
-- Google Workspace authentication
-- Reduced risk of personal Apple IDs locking school-owned devices
-
-## Next Steps
-
-- Assign existing Macs to Mosyle
-- Enable Google Workspace federation
-- Implement Domain Capture after approval
-- Restrict school-owned Macs to Managed Apple Accounts
+This provides a cleaner deployment process and significantly reduces the risk of Activation Lock preventing devices from being reused, reassigned, or sold.
