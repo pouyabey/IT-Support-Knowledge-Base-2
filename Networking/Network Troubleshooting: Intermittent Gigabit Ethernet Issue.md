@@ -1,6 +1,7 @@
 
 # 🔧 Network Troubleshooting: Intermittent Gigabit Ethernet Issue
 
+
 **Equipment:** Gigabit Network Switches & IP Phones  
 **Status:** 🔎 Under Investigation
 
@@ -16,7 +17,7 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 - Some phones established 100 Mbps connections, while others negotiated at 1000 Mbps.
 - Computers connected through affected phones experienced reduced network speeds.
 - Direct Ethernet connections to computers worked normally at Gigabit speed.
-- Some other network devices operated at 100 Mbps as expected due to their hardware limitations.
+- Other network devices operating at 100 Mbps appeared normal due to their hardware specifications.
 
 ---
 
@@ -30,18 +31,19 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 | Auto-Negotiation | Enabled automatic link negotiation | ⚠️ Intermittent 100 Mbps / link drops |
 | Manual Gigabit | Selected 1 Gbps on the switch | ✅ Gigabit link indicated |
 | Direct Switch Test | Connected a phone that had reached 1 Gbps directly to multiple switch ports | ✅ Consistent 1000 Mbps |
-| Original Connection Retest | Returned the phone to its original network connection | ✅ Remained at 1000 Mbps |
+| Original Connection Retest | Returned the phone to its original connection | ✅ Remained at 1000 Mbps |
 
 ---
 
 ## 🔍 3. Key Findings
 
-- The IP phone uplink appeared to be the bottleneck for computers connected through it.
+- The phone uplink appeared to be the bottleneck for computers connected through it.
 - The issue was intermittent rather than a permanent 100 Mbps limitation.
 - Reconnecting Ethernet cables sometimes restored Gigabit connectivity.
-- A phone that successfully negotiated at 1000 Mbps maintained that speed during direct switch testing.
-- The issue could not be consistently reproduced when bypassing the structured cabling.
-- Physical cabling and PoE-related problems have not been ruled out.
+- A phone that reached 1000 Mbps maintained that speed during direct switch testing.
+- The problem could not be consistently reproduced when bypassing structured cabling.
+- Physical cabling and PoE-related issues have not been ruled out.
+- Multiple phones exhibited similar behavior, making isolated phone hardware failures less likely.
 
 ---
 
@@ -50,11 +52,10 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 | Potential Cause | Description |
 |----------------|-------------|
 | Auto-Negotiation | Possible instability during Ethernet link negotiation |
-| Cable Terminations | Intermittent RJ45 or keystone connections |
+| Cable Terminations | Intermittent RJ45, keystone, or patch panel connections |
 | Structured Cabling | Possible signal degradation or excessive resistance |
-| PoE Delivery | Potential voltage drop or unstable power delivery |
-| Firmware | Possible IP phone or switch firmware behavior |
-| Hardware | Possible IP phone Ethernet port issue |
+| PoE Delivery | Potential voltage drop or power delivery instability |
+| Firmware | Possible phone or switch firmware behavior |
 
 **Note:** These are hypotheses, not confirmed root causes.
 
@@ -64,7 +65,7 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 
 Repeatedly disconnecting and reconnecting Ethernet cables restored **1000 Mbps** on some affected phones.
 
-This workaround does not guarantee long-term stability.
+This is not considered a permanent solution.
 
 ---
 
@@ -84,21 +85,21 @@ This workaround does not guarantee long-term stability.
 | Result | Interpretation |
 |--------|----------------|
 | Stable 1000 Mbps with external power | PoE delivery or power-related behavior becomes more suspect |
-| Still negotiating at 100 Mbps | Signal quality, cable terminations, or negotiation issues remain possible |
-| Intermittent link drops | Further investigation of cabling, ports, and firmware required |
+| Still negotiating at 100 Mbps | Signal quality, cable terminations, or Auto-Negotiation remain possible |
+| Intermittent link drops | Further investigation of cabling and firmware required |
 
 ---
 
 ## ✅ 7. Current Conclusion
 
-The investigation identified an **intermittent Ethernet link negotiation issue** affecting computers connected through IP phones.
+The investigation identified an **intermittent Ethernet link negotiation issue** affecting multiple IP phones.
 
-The available evidence suggests several possible contributing factors:
+The most relevant areas for further investigation are:
 
-1. Unstable physical connections or cable terminations.
-2. PoE delivery or cable resistance issues.
-3. Auto-Negotiation instability.
-4. IP phone firmware or hardware behavior.
+1. Physical cabling and cable terminations.
+2. PoE voltage drop or cable resistance.
+3. Auto-Negotiation behavior.
+4. Phone or switch firmware.
 
 **Root Cause:** ❌ Not confirmed  
 **Resolution Status:** 🔎 Under Investigation  
@@ -106,4 +107,4 @@ The available evidence suggests several possible contributing factors:
 
 ---
 
-**Documentation Note:** This case study has been anonymized for technical learning and troubleshooting purposes.
+**Documentation Note:** This case study has been anonymized for technical learning purposes.
