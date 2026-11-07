@@ -13,10 +13,11 @@ Several computers experienced slow network connectivity when connected through I
 The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of **1000 Mbps (Gigabit Ethernet)**.
 
 ### Initial Observations
+
 - Some phones established 100 Mbps connections, while others negotiated at 1000 Mbps.
 - Computers connected through affected phones experienced reduced network speeds.
 - Direct Ethernet connections to computers worked normally at Gigabit speed.
-- Other network devices operating at 100 Mbps appeared normal due to their hardware specifications.
+- Some other network devices operated normally at 100 Mbps due to their hardware specifications.
 
 ---
 
@@ -24,25 +25,26 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 
 | Test | Action | Result |
 |------|--------|--------|
-| Direct PC Connection | Bypassed the IP phone | ✅ 1000 Mbps |
-| Through IP Phone | Connected PC through the phone | ⚠️ Phone uplink sometimes limited to 100 Mbps |
-| Cable Reconnection | Reconnected Ethernet cables multiple times | ⚠️ Some phones alternated between 100 and 1000 Mbps |
-| Auto-Negotiation | Enabled automatic link negotiation | ⚠️ Intermittent 100 Mbps / link drops |
-| Manual Gigabit | Selected 1 Gbps on the switch | ✅ Gigabit link indicated |
-| Direct Switch Test | Connected an IP phone directly to the switch, bypassing structured cabling | ⚠️ Sometimes 100 Mbps, sometimes 1000 Mbps |
+| Direct PC Connection | Bypassed the IP phone and connected the computer directly | ✅ 1000 Mbps |
+| Through IP Phone | Connected the computer through the phone's Ethernet port | ⚠️ Phone uplink sometimes limited to 100 Mbps |
+| Cable Reconnection | Reconnected Ethernet cables multiple times | ⚠️ Link sometimes negotiated at 100 Mbps and sometimes at 1000 Mbps |
+| Auto-Negotiation | Enabled automatic link negotiation on the switch | ⚠️ Intermittent 100 Mbps / 1000 Mbps connections and occasional link drops |
+| Manual Gigabit | Manually forced the switch port to 1 Gbps | ❌ Ethernet link disconnected |
+| Direct Switch Test | Connected an IP phone directly to different switch ports, bypassing structured cabling | ⚠️ Sometimes 100 Mbps, sometimes 1000 Mbps |
 | Original Connection Retest | Returned the phone to its original connection | ✅ Reached 1000 Mbps during retesting |
 
 ---
 
 ## 🔍 3. Key Findings
 
-- The phone uplink appeared to be the bottleneck for computers connected through it.
+- The phone's uplink speed appeared to be the bottleneck for computers connected through it.
 - The issue was intermittent rather than a permanent 100 Mbps limitation.
 - Reconnecting Ethernet cables sometimes restored Gigabit connectivity.
 - Direct switch connections also exhibited inconsistent link negotiation.
+- Manually forcing the switch port to 1 Gbps caused the Ethernet link to disconnect.
 - The issue could occur even when bypassing structured cabling.
 - Multiple phones exhibited similar behavior, making isolated phone hardware failures less likely.
-- Physical cabling and PoE-related problems have not been ruled out.
+- Physical cabling and PoE-related issues have not been ruled out.
 
 ---
 
@@ -50,21 +52,23 @@ The phones intermittently negotiated at **100 Mbps (Fast Ethernet)** instead of 
 
 | Potential Cause | Description |
 |----------------|-------------|
-| Auto-Negotiation | Possible instability during Ethernet link negotiation |
-| Cable Terminations | Intermittent RJ45, keystone, or patch panel connections |
-| Structured Cabling | Possible signal degradation or excessive resistance |
+| Auto-Negotiation | Possible instability during Ethernet speed and duplex negotiation |
+| Cable Terminations | Intermittent RJ45 connectors, keystone jacks, or patch panel connections |
+| Structured Cabling | Possible signal degradation or excessive cable resistance |
 | PoE Delivery | Potential voltage drop or power delivery instability |
-| Firmware | Possible phone or switch firmware behavior |
+| Firmware | Possible phone or switch firmware-related negotiation behavior |
 
 **Note:** These are hypotheses, not confirmed root causes.
+
+The fact that the issue also occurs during direct switch testing suggests that structured cabling may not be the only contributing factor.
 
 ---
 
 ## 🛠️ 5. Temporary Workaround
 
-Repeatedly disconnecting and reconnecting Ethernet cables restored **1000 Mbps** on some affected phones.
+Repeatedly disconnecting and reconnecting Ethernet cables sometimes restored **1000 Mbps** connectivity.
 
-This is not considered a permanent solution.
+However, this is not a permanent solution because the underlying cause remains unidentified.
 
 ---
 
@@ -72,13 +76,13 @@ This is not considered a permanent solution.
 
 ### Planned Test: External Power Adapter
 
-- [ ] Power an affected IP phone using a manufacturer-approved external adapter.
+- [ ] Power an affected IP phone using a manufacturer-approved external power adapter.
 - [ ] Disable PoE on the corresponding switch port.
 - [ ] Keep the same Ethernet cable and network path.
 - [ ] Test Auto-Negotiation across multiple reconnections.
-- [ ] Monitor link speed, stability, and disconnections.
-- [ ] Review switch port errors and link events.
-- [ ] Compare direct switch connections with connections through structured cabling.
+- [ ] Monitor link speed, stability, and unexpected disconnections.
+- [ ] Check switch port errors and link events.
+- [ ] Compare results between direct switch connections and structured cabling.
 
 ### Expected Results
 
@@ -91,23 +95,43 @@ This is not considered a permanent solution.
 
 ---
 
-## ✅ 7. Current Conclusion
+## 💡 7. Potential Workaround: Separate Phone and PC Connections
 
-The investigation identified an **intermittent Ethernet link negotiation issue** affecting multiple IP phones.
+Computers achieved Gigabit speeds when connected directly to Ethernet, bypassing the IP phones.
 
-Because inconsistent link speeds were also observed during direct switch testing, the issue cannot currently be attributed solely to structured cabling.
+A potential workaround is to connect computers and IP phones to separate network connections wherever suitable wall jacks and switch ports are available.
 
-The most relevant areas for further investigation are:
+### Expected Benefits
 
-1. Auto-Negotiation behavior between phones and switches.
-2. PoE delivery, voltage drop, or cable resistance.
-3. Physical cabling and connector quality.
-4. Phone or switch firmware.
+- Computers could maintain Gigabit Ethernet connectivity without being limited by the phone's uplink speed.
+- IP phones generally require far less bandwidth than 100 Mbps for voice communication.
+- Existing network cabling could potentially be reused without installing additional cable runs.
+- The workaround could reduce user impact while the underlying issue is investigated.
 
-**Root Cause:** ❌ Not confirmed  
-**Resolution Status:** 🔎 Under Investigation  
-**Next Action:** Test with an external power adapter.
+**Limitation:** This approach depends on the availability of working Ethernet connections and does not resolve the underlying phone negotiation issue.
 
 ---
 
-**Documentation Note:** This case study has been anonymized for technical learning purposes.
+## ✅ 8. Current Conclusion
+
+The investigation identified an **intermittent Ethernet link negotiation issue** affecting multiple IP phones and indirectly reducing network performance for connected computers.
+
+The issue was observed with both structured cabling and direct switch connections.
+
+Additionally, manually forcing 1 Gbps on the switch resulted in link disconnection, suggesting that further investigation of link negotiation and physical connectivity is necessary.
+
+### Areas for Further Investigation
+
+1. Auto-Negotiation behavior between phones and switches.
+2. PoE delivery and potential power instability.
+3. Ethernet cable quality and terminations.
+4. Phone and switch firmware.
+5. Structured cabling and patch panel connections.
+
+**Root Cause:** ❌ Not confirmed  
+**Resolution Status:** 🔎 Under Investigation  
+**Next Action:** Test using an external power adapter and compare connection stability.
+
+---
+
+**Documentation Note:** This case study has been anonymized for technical learning purposes. No confidential organizational details, network addresses, device identifiers, or internal infrastructure information are included.
